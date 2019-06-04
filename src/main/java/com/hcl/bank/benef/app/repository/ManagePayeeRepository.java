@@ -10,6 +10,6 @@ import com.hcl.bank.benef.app.entity.ManagePayee;
 @Repository
 public interface ManagePayeeRepository extends JpaRepository<ManagePayee, Long>{
 
-
+	public ManagePayee findByPayeeId(Long payeeId);
 
 }
