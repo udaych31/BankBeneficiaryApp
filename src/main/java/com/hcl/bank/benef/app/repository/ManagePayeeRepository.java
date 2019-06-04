@@ -7,13 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.hcl.bank.benef.app.entity.ManagePayee;
 
-
-
 @Repository
 @Transactional
-public interface ManagePayeeRepository extends JpaRepository<ManagePayee, Long>{
-	
-		
-	    public void deleteByPayeeId(Long payeeId);
+public interface ManagePayeeRepository extends JpaRepository<ManagePayee, Long> {
+
+	public void deleteByPayeeId(Long payeeId);
+
+	public ManagePayee findByPayeeId(Long payeeId);
 
 }
