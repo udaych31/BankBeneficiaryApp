@@ -24,7 +24,7 @@ public class EmailSender {
 	@Autowired
 	private OtpRepository otpRepository;
 
-	public void sendOtp(OtpRequest request) throws Exception{
+	public Boolean sendOtp(OtpRequest request) throws Exception{
 		try {
 			
 			SimpleMailMessage message = new SimpleMailMessage();
@@ -38,12 +38,22 @@ public class EmailSender {
 			if(findByAccountNo!=null) {
 				findByAccountNo.setOtp(userOtp);
 				findByAccountNo.setOtpUsed('F');
+				otpRepository.save(findByAccountNo);
+				message.setText("This is OTP for adding payee : "+userOtp);
+			}else {
+				findByAccountNo=new OtpDetails();
+				findByAccountNo.setAccountNo(request.getAccountNo());
+				findByAccountNo.setOtp(userOtp);
+				findByAccountNo.setOtpUsed('F');
+				otpRepository.save(findByAccountNo);
 				message.setText("This is OTP for adding payee : "+userOtp);
 			}
 			emailSender.send(message);
+			return true;
 			
 		} catch (Exception e) {
 			logger.error(this.getClass().getName()+" sendOtp :"+e.getMessage());
+			return false;
 		}
 	}
 
