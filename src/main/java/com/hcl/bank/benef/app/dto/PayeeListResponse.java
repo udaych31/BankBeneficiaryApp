@@ -3,11 +3,14 @@ package com.hcl.bank.benef.app.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class PayeeListResponse implements Serializable {
+import com.hcl.bank.benef.app.util.ApiResponse;
+
+public class PayeeListResponse extends ApiResponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private List<PayeeDto> payeeList;
+	
 	
 	public PayeeListResponse() {
 		super();

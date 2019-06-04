@@ -41,8 +41,12 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 				payeeList.add(dto);
 			});
 			response.setPayeeList(payeeList);
+			response.setStatusCode(200);
+			response.setStatus("SUCCESS");
 			
 		} catch (Exception e) {
+			response.setStatusCode(500);
+			response.setStatus("INTERNALSERVERERROR");
 			logger.error(this.getClass().getName()+" getPayeeList : "+e.getMessage());
 		}
 		return response;
