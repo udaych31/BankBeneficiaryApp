@@ -1,40 +1,24 @@
-package com.hcl.bank.benef.app.entity;
+package com.hcl.bank.benef.app.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table
-public class ManagePayee implements Serializable {
+public class PayeeDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long payeeId;
 	
-	@Column
-	private Long accountNo;
-	
-	@Column
-	private Long payeeAccountNo;
-	
-	@Column
 	private String nickName;
 	
-	@Column
+	private Long accountNo;
+	
+	private Long payeeAccountNo;
+	
 	private String ifscCode;
 	
-	@Column
 	private String emailId;
 	
-	public ManagePayee() {
+	public PayeeDto() {
 		super();
 	}
 
@@ -44,6 +28,14 @@ public class ManagePayee implements Serializable {
 
 	public void setPayeeId(Long payeeId) {
 		this.payeeId = payeeId;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public Long getAccountNo() {
@@ -60,14 +52,6 @@ public class ManagePayee implements Serializable {
 
 	public void setPayeeAccountNo(Long payeeAccountNo) {
 		this.payeeAccountNo = payeeAccountNo;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
 	}
 
 	public String getIfscCode() {
