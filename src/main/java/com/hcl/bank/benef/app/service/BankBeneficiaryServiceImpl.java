@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hcl.bank.benef.app.dto.EditPayeeResponse;
 import com.hcl.bank.benef.app.dto.PayeeDto;
 import com.hcl.bank.benef.app.dto.PayeeListResponse;
 import com.hcl.bank.benef.app.entity.ManagePayee;
@@ -48,6 +49,31 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 			response.setStatusCode(500);
 			response.setStatus("INTERNALSERVERERROR");
 			logger.error(this.getClass().getName()+" getPayeeList : "+e.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public EditPayeeResponse getPayeeByUsingPayeeId(Long payeeId) {
+		EditPayeeResponse response=new EditPayeeResponse();
+		try {
+			ManagePayee payee = payeeRepository.findByPayeeId(payeeId);
+			if(payee!=null) {
+				PayeeDto dto=new PayeeDto();
+				dto.setAccountNo(payee.getAccountNo());
+				dto.setEmailId(payee.getEmailId());
+				dto.setIfscCode(payee.getIfscCode());
+				dto.setNickName(payee.getNickName());
+				dto.setPayeeAccountNo(payee.getPayeeAccountNo());
+				dto.setPayeeId(payee.getPayeeId());
+				response.setPayeeDetails(dto);
+				response.setStatus("SUCCESS");
+				response.setStatusCode(200);
+			}
+			
+			
+		} catch (Exception e) {
+			logger.error(this.getClass().getName()+" getPayeeByUsingPayeeId :"+e.getMessage());
 		}
 		return response;
 	}
