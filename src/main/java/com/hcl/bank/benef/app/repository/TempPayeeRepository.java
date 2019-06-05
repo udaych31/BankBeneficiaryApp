@@ -8,7 +8,7 @@ import com.hcl.bank.benef.app.entity.TempPayee;
 @Repository
 public interface TempPayeeRepository extends JpaRepository<TempPayee, Long> {
 	
-	public TempPayee findByPayeeId(Long payeeId);
+	public TempPayee findByTempPayeeId(Long tempPayeeId);
 	
 	
 	

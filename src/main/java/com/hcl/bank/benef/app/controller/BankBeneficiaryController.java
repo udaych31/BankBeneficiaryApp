@@ -19,6 +19,8 @@ import com.hcl.bank.benef.app.dto.ConfirmPayeeResponse;
 import com.hcl.bank.benef.app.dto.DeleteResponse;
 import com.hcl.bank.benef.app.dto.EditPayeeResponse;
 import com.hcl.bank.benef.app.dto.PayeeListResponse;
+import com.hcl.bank.benef.app.dto.UpdatePayeeRequest;
+import com.hcl.bank.benef.app.dto.UpdatePayeeResponse;
 import com.hcl.bank.benef.app.dto.ValidateRequest;
 import com.hcl.bank.benef.app.service.BankBeneficiaryServiceImpl;
 
@@ -68,4 +70,19 @@ public class BankBeneficiaryController {
 	return	bankBeneficiaryServiceImpl.confirmDeletePayee(requesst);
 
 	}
+	
+	@PostMapping("/updatePayee")
+	public UpdatePayeeResponse updatePayee(@RequestBody UpdatePayeeRequest request) {
+
+		logger.info(this.getClass().getName()+" updatePayee is calling ...!");
+		return bankBeneficiaryServiceImpl.updatePayee(request);	
+
+	}
+	
+	@PostMapping("/confirmUpdatePayee")
+	public  ConfirmPayeeResponse confirmUpdatePayee(@RequestBody ConfirmPayeeRequest request) {
+		logger.info(this.getClass().getName()+" confirmUpdatePayee is calling ...!");
+		return bankBeneficiaryServiceImpl.confirmUpdatePayee(request);	
+	}
+	
 }

@@ -18,6 +18,8 @@ import com.hcl.bank.benef.app.dto.EditPayeeResponse;
 import com.hcl.bank.benef.app.dto.OtpRequest;
 import com.hcl.bank.benef.app.dto.PayeeDto;
 import com.hcl.bank.benef.app.dto.PayeeListResponse;
+import com.hcl.bank.benef.app.dto.UpdatePayeeRequest;
+import com.hcl.bank.benef.app.dto.UpdatePayeeResponse;
 import com.hcl.bank.benef.app.dto.ValidateOtpRequest;
 import com.hcl.bank.benef.app.dto.ValidateRequest;
 import com.hcl.bank.benef.app.entity.AccountSummary;
@@ -127,7 +129,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 					payee.setEmailId(request.getEmailId());
 					payee.setIfscCode(request.getIfscCode());
 					TempPayee save = tempPayeeRepository.save(payee);
-					Long referenceId=save.getPayeeId();
+					Long referenceId=save.getTempPayeeId();
 					
 					response=new AddPayeeResponse();
 					OtpRequest otpReq=new OtpRequest();
@@ -167,7 +169,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 			if(otp!=null) {
 				otp.setOtpUsed('T');
 				otpRepository.save(otp);
-				TempPayee findByPayeeId = tempPayeeRepository.findByPayeeId(request.getReferenceNo());
+				TempPayee findByPayeeId = tempPayeeRepository.findByTempPayeeId(request.getReferenceNo());
 				if(findByPayeeId!=null) {
 					ManagePayee payee=new ManagePayee();
 					payee.setAccountNo(1L);
@@ -209,7 +211,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 		OtpDetails otp=null;
 		try {
 			
-			TempPayee findByPayeeId = tempPayeeRepository.findByPayeeId(request.getAccountNo());
+			TempPayee findByPayeeId = tempPayeeRepository.findByTempPayeeId(request.getAccountNo());
 			if(findByPayeeId!=null) {
 				OtpDetails	otpDetails = otpRepository.findByAccountNo(findByPayeeId.getAccountNo());
 				if(otpDetails!=null && otpDetails.getOtp().longValue()==request.getOtp().longValue()) {
@@ -337,4 +339,89 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 		return otp;
 
 	}
+	
+	
+	@Override
+	public UpdatePayeeResponse updatePayee(UpdatePayeeRequest request) {
+		UpdatePayeeResponse response=null;
+		try {
+			if(request!=null) {
+				TempPayee payee=new TempPayee();
+				payee.setAccountNo(1L);
+				payee.setNickName(request.getNickName());
+				payee.setPayeeAccountNo(request.getPayeeAccountNo());
+				payee.setEmailId(request.getEmailId());
+				payee.setIfscCode(request.getIfscCode());
+				payee.setPayeeId(request.getPayeeId());
+				TempPayee save = tempPayeeRepository.save(payee);
+				Long referenceId=save.getTempPayeeId();
+				
+				response=new UpdatePayeeResponse();
+				OtpRequest otpReq=new OtpRequest();
+				otpReq.setAccountNo(1L);
+				otpReq.setEmail(request.getEmailId());
+				emailSender.sendOtp(otpReq);			
+				
+				response.setMessage("Success! your reference number is "+referenceId);
+				response.setReferenceNo(referenceId);
+				response.setStatus(SUCCESS);
+				response.setStatusCode(201);
+				return response;
+			}
+		} catch (Exception e) {
+			logger.error(e.getClass().getName() + "  updatePayee :" + e.getMessage());
+		}
+		return response;
+	}
+	
+	@Override
+	public ConfirmPayeeResponse confirmUpdatePayee(ConfirmPayeeRequest request) {
+		ConfirmPayeeResponse response=new ConfirmPayeeResponse();
+		try {
+			ValidateOtpRequest otpReq=new ValidateOtpRequest();
+			otpReq.setAccountNo(request.getReferenceNo());
+			otpReq.setOtp(request.getOtp());
+			OtpDetails otp = validateOtp(otpReq);
+			if(otp!=null) {
+				otp.setOtpUsed('T');
+				otpRepository.save(otp);
+				TempPayee findByPayeeId = tempPayeeRepository.findByTempPayeeId(request.getReferenceNo());
+				if(findByPayeeId!=null) {
+					ManagePayee payee = payeeRepository.findByPayeeId(findByPayeeId.getPayeeId());
+					payee.setAccountNo(1L);
+					payee.setNickName(findByPayeeId.getNickName());
+					payee.setPayeeAccountNo(findByPayeeId.getPayeeAccountNo());
+					payee.setEmailId(findByPayeeId.getEmailId());
+					payee.setIfscCode(findByPayeeId.getIfscCode());
+					payee.setPayeeId(findByPayeeId.getPayeeId());
+					payeeRepository.save(payee);
+					tempPayeeRepository.delete(findByPayeeId);
+					response.setStatusCode(201);
+					response.setStatus(SUCCESS);
+					response.setMessage("Payee added successfully ..!");
+					return response;
+				}else {
+					response.setStatusCode(404);
+					response.setStatus(FAILURE);
+					response.setMessage("SESSION TIME OUT");
+					return response;
+				}
+				
+				
+			}else {
+				response.setStatusCode(400);
+				response.setStatus(FAILURE);
+				response.setMessage("INVALID OTP");
+				return response;
+			}
+			
+			
+			
+		} catch (Exception e) {
+			logger.error(this.getClass().getName()+" addPayee :"+e.getMessage());
+		}
+		
+		return null;
+	}
+	
 }

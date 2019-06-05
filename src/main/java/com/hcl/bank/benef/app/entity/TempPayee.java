@@ -17,7 +17,7 @@ public class TempPayee implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long payeeId;
+	private Long tempPayeeId;
 	
 	@Column
 	private Long accountNo;
@@ -33,6 +33,8 @@ public class TempPayee implements Serializable {
 	
 	@Column
 	private String ifscCode;
+	
+	private Long payeeId;
 	
 	
 	public TempPayee() {
@@ -99,6 +101,16 @@ public class TempPayee implements Serializable {
 		this.ifscCode = ifscCode;
 	}
 
+
+	public Long getTempPayeeId() {
+		return tempPayeeId;
+	}
+
+
+	public void setTempPayeeId(Long tempPayeeId) {
+		this.tempPayeeId = tempPayeeId;
+	}
+	
 	
 	
 	
