@@ -51,7 +51,8 @@ public class EmailSender {
 			}
 			
 			
-			//emailSender.send(message);
+			emailSender.send(message);
+			logger.info("email sent successfully");
 			return true;
 			
 		} catch (Exception e) {

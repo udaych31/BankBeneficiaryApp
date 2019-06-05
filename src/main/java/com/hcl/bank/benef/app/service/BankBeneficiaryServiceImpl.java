@@ -210,9 +210,9 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 			
 			TempPayee findByPayeeId = tempPayeeRepository.findByPayeeId(request.getAccountNo());
 			if(findByPayeeId!=null) {
-				otp = otpRepository.findByAccountNo(findByPayeeId.getAccountNo());
-				if(otp!=null && otp.getOtp().longValue()==request.getOtp().longValue()) {
-					return otp;
+				OtpDetails	otpDetails = otpRepository.findByAccountNo(findByPayeeId.getAccountNo());
+				if(otpDetails!=null && otpDetails.getOtp().longValue()==request.getOtp().longValue()) {
+					return otpDetails;
 				}
 			}
 			
@@ -323,9 +323,9 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 
 			ManagePayee payee = magepayee.get();
 
-			otp = otpRepository.findByAccountNo(payee.getAccountNo());
-			if (otp != null && otp.getOtp().longValue() == request.getOtp().longValue()) {
-				return otp;
+			OtpDetails otpDetails = otpRepository.findByAccountNo(payee.getAccountNo());
+			if (otpDetails != null && otpDetails.getOtp().longValue() == request.getOtp().longValue()) {
+				return otpDetails;
 			} else {
 				throw new BeneficiaryServiceException("validation otp was failed");
 			}
