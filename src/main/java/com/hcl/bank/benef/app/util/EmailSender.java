@@ -50,14 +50,8 @@ public class EmailSender {
 				message.setText("This is OTP for adding payee : " + userOtp);
 			}
 			
-			/*
-			 * if(request!=null) { OtpDetails otpDetails=new OtpDetails();
-			 * otpDetails.setOtp(userOtp); otpDetails.setOtpUsed('F');
-			 * otpDetails.setAccountNo(request.getAccountNo());
-			 * otpRepository.save(otpDetails);
-			 * message.setText("This is OTP for confirmation payee : "+userOtp); }
-			 */
-			emailSender.send(message);
+			
+			//emailSender.send(message);
 			return true;
 			
 		} catch (Exception e) {

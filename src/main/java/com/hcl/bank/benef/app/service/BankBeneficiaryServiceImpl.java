@@ -245,7 +245,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 
 						AccountSummary account = accountSummary.get();
 						OtpRequest otpRequest = new OtpRequest();
-						otpRequest.setAccountNo(payee.getPayeeAccountNo());
+						otpRequest.setAccountNo(payee.getAccountNo());
 						otpRequest.setEmail(account.getEmail());
 
 						emailSender.sendOtp(otpRequest);
@@ -295,6 +295,8 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 						response.setMessage("Payee was deleted successfully");
 						response.setStatusCode(200);
 
+					}else {
+						throw new BeneficiaryServiceException("Invalid otp");
 					}
 				}
 
@@ -322,7 +324,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 			ManagePayee payee = magepayee.get();
 
 			otp = otpRepository.findByAccountNo(payee.getAccountNo());
-			if (otp != null && otp.getOtp().longValue() == request.getOtp().longValue() && otp.getOtpUsed().equals("F")) {
+			if (otp != null && otp.getOtp().longValue() == request.getOtp().longValue()) {
 				return otp;
 			} else {
 				throw new BeneficiaryServiceException("validation otp was failed");

@@ -62,8 +62,8 @@ public class BankBeneficiaryController {
 		logger.info(this.getClass().getName()+" confirmAddPayee is calling ...!");
 		return bankBeneficiaryServiceImpl.confirmAddPayee(request);	
 	}
-	@DeleteMapping("/confirmPayee")
-	public DeleteResponse confirmDeletePayee(ValidateRequest requesst) {
+	@PostMapping("/confirmPayee")
+	public DeleteResponse confirmDeletePayee(@RequestBody ValidateRequest requesst) {
 
 	return	bankBeneficiaryServiceImpl.confirmDeletePayee(requesst);
 
