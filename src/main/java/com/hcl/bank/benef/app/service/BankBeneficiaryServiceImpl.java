@@ -176,6 +176,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 					payee.setEmailId(findByPayeeId.getEmailId());
 					payee.setIfscCode(findByPayeeId.getIfscCode());
 					payeeRepository.save(payee);
+					tempPayeeRepository.delete(findByPayeeId);
 					response.setStatusCode(201);
 					response.setStatus(SUCCESS);
 					response.setMessage("Payee added successfully ..!");
