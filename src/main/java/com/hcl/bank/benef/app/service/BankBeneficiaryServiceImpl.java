@@ -170,7 +170,7 @@ public class BankBeneficiaryServiceImpl implements BankBeneficiaryService {
 				TempPayee findByPayeeId = tempPayeeRepository.findByPayeeId(request.getReferenceNo());
 				if(findByPayeeId!=null) {
 					ManagePayee payee=new ManagePayee();
-					payee.setAccountNo(request.getAccountNo());
+					payee.setAccountNo(1L);
 					payee.setNickName(findByPayeeId.getNickName());
 					payee.setPayeeAccountNo(findByPayeeId.getPayeeAccountNo());
 					payee.setEmailId(findByPayeeId.getEmailId());

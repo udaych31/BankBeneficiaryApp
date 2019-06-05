@@ -6,22 +6,12 @@ public class ConfirmPayeeRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long accountNo;
-	
 	private Long referenceNo;
 	
 	private Long otp;
 	
 	public ConfirmPayeeRequest() {
 		super();
-	}
-
-	public Long getAccountNo() {
-		return accountNo;
-	}
-
-	public void setAccountNo(Long accountNo) {
-		this.accountNo = accountNo;
 	}
 
 	public Long getReferenceNo() {
